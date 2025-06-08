@@ -1,6 +1,6 @@
 # 🎥 Aplicação de Transcrição de Vídeo
 
-Uma aplicação web moderna desenvolvida em React que permite fazer upload de vídeos e gerar transcrições automáticas sincronizadas com a reprodução do vídeo.
+Uma aplicação web moderna desenvolvida em React e Next.js que permite fazer upload de vídeos e gerar transcrições automáticas sincronizadas com a reprodução do vídeo.
 
 ## ✨ Funcionalidades
 
@@ -14,52 +14,58 @@ Uma aplicação web moderna desenvolvida em React que permite fazer upload de v�
 ## 🚀 Tecnologias Utilizadas
 
 - **React 19** - Biblioteca principal
+- **Next.js 15** - Framework React
 - **React Query (TanStack Query)** - Gerenciamento de estado assíncrono
 - **CSS Puro** - Estilização sem frameworks
 - **HTML5 Video** - Player nativo do navegador
-- **Next.js 15** - Framework React (opcional)
 
 ## 📋 Pré-requisitos
 
-- Node.js 18+ 
-- npm ou yarn
+- Node.js 18 ou superior
+- npm (recomendado)
 
 ## 🛠️ Instalação
 
 1. **Clone o repositório**
-\`\`\`bash
+
+```bash
 git clone https://github.com/seu-usuario/video-transcription-app.git
 cd video-transcription-app
-\`\`\`
+```
 
 2. **Instale as dependências**
-\`\`\`bash
-npm install
-# ou
-yarn install
-\`\`\`
+
+> Caso encontre erros de dependência, utilize o comando com o parâmetro `--legacy-peer-deps`:
+
+```bash
+npm install --legacy-peer-deps
+```
 
 3. **Configure as variáveis de ambiente** (opcional)
-\`\`\`bash
+
+```bash
 cp .env.example .env.local
-\`\`\`
+```
 
 Adicione sua chave da API do OpenAI (se usar transcrição real):
-\`\`\`env
+
+```env
 NEXT_PUBLIC_OPENAI_API_KEY=sua_chave_aqui
-\`\`\`
+```
 
 4. **Execute o projeto**
-\`\`\`bash
+
+```bash
 npm run dev
-# ou
-yarn dev
-\`\`\`
+```
 
 5. **Acesse a aplicação**
-\`\`\`
+
+Abra o navegador e acesse:
+
+```
 http://localhost:3000
-\`\`\`
+```
 
 ## 📁 Estrutura do Projeto
 
