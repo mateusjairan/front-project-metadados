@@ -27,7 +27,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
         <div className="video-info">
           <h3>Video Player</h3>
-          <p>Use the controls to play, pause, and seek through the video</p>
+            <p>Use os controles para reproduzir, pausar e navegar pelo vídeo</p>
         </div>
       </div>
     )

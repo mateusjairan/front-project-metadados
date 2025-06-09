@@ -36,27 +36,22 @@ const mockTranscription: TranscriptionSegment[] = [
 
 export async function getTranscription(videoFile: File): Promise<TranscriptionSegment[]> {
   // Simular delay da API
-  await new Promise((resolve) => setTimeout(resolve, 2000))
+  // await new Promise((resolve) => setTimeout(resolve, 2000))
 
-  // Em produção, você faria algo como:
-  // const formData = new FormData()
-  // formData.append('video', videoFile)
-  // const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-  //   },
-  //   body: formData
-  // })
-  // return response.json()
+  // Envia o arquivo de vídeo para a API local
+  const formData = new FormData()
+  formData.append('video', videoFile)
 
-  // Para integração com a API do GitHub mencionada:
-  // const response = await fetch('https://api.github.com/repos/MetadadosPy/manipulacao_metadados/contents/', {
-  //   method: 'GET',
-  //   headers: {
-  //     'Accept': 'application/vnd.github.v3+json',
-  //   }
-  // })
+  const response = await fetch('http://localhost:8000/transcribe', {
+    method: 'POST',
+    body: formData
+  })
 
-  return mockTranscription
+  if (!response.ok) {
+    throw new Error('Erro ao obter transcrição da API')
+  }
+
+  // Supondo que a resposta seja um array de segmentos no formato correto
+  const data = await response.json()
+  return data as TranscriptionSegment[]
 }

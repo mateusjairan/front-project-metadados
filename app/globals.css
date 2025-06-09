@@ -120,6 +120,12 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   height: calc(100vh - 200px);
+  /* Inverte a ordem das divs-filhas, mas não o conteúdo interno */
+  direction: rtl;
+}
+
+.video-workspace > * {
+  direction: ltr;
 }
 
 .video-section,

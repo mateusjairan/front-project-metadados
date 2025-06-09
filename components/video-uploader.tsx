@@ -68,12 +68,12 @@ export default function VideoUploader({ onVideoUpload }: VideoUploaderProps) {
           </svg>
         </div>
 
-        <h3>Upload Video File</h3>
-        <p>Drag and drop your video here, or click to select</p>
-        <p className="file-types">Supported formats: MP4, WebM, AVI, MOV</p>
+        <h3>Upload de arquivo de víeo</h3>
+        <p>Arraste e solte um arquivo aqui, ou selecione um arquivo.</p>
+        <p className="file-types">Formatos suportados: MP4, WebM, AVI, MOV</p>
 
         <button className="upload-button" type="button">
-          Choose File
+          Selecionar arquivo.
         </button>
       </div>
 
