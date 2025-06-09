@@ -2,29 +2,38 @@
 
 Uma aplicação web moderna desenvolvida em React e Next.js que permite fazer upload de vídeos e gerar transcrições automáticas sincronizadas com a reprodução do vídeo.
 
+---
+
 ## ✨ Funcionalidades
 
-- **📤 Upload de Vídeo**: Interface drag-and-drop intuitiva para carregar vídeos
-- **🎬 Player Nativo**: Reprodutor HTML5 com controles personalizados
-- **📝 Transcrição Sincronizada**: Transcrição automática com timestamps precisos
-- **🔄 Navegação Inteligente**: Clique em qualquer segmento para navegar no vídeo
-- **🌙 Tema Escuro**: Interface moderna com design responsivo
-- **⚡ Performance**: Cache inteligente com React Query
+- **Upload de Vídeo**: Interface intuitiva para arrastar e soltar arquivos de vídeo (MP4, WebM, AVI, MOV).
+- **Player de Vídeo**: Reprodutor HTML5 com controles personalizados.
+- **Transcrição Sincronizada**: Transcrição automática com timestamps, destacando o segmento atual.
+- **Navegação Inteligente**: Clique em qualquer trecho da transcrição para pular para aquele momento do vídeo.
+- **Tema Escuro**: Interface moderna, responsiva e agradável.
+- **Performance**: Cache inteligente com React Query.
+
+---
 
 ## 🚀 Tecnologias Utilizadas
 
-- **React 19** - Biblioteca principal
-- **Next.js 15** - Framework React
-- **React Query (TanStack Query)** - Gerenciamento de estado assíncrono
-- **CSS Puro** - Estilização sem frameworks
-- **HTML5 Video** - Player nativo do navegador
+- **React 19** – Biblioteca principal de UI
+- **Next.js 15** – Framework React para SSR e rotas
+- **React Query (TanStack Query)** – Gerenciamento de requisições e cache
+- **TypeScript** – Tipagem estática
+- **CSS Puro** – Estilização customizada
+- **HTML5 Video** – Player nativo
+
+---
 
 ## 📋 Pré-requisitos
 
 - Node.js 18 ou superior
 - npm (recomendado)
 
-## 🛠️ Instalação
+---
+
+## 🛠️ Instalação Passo a Passo
 
 1. **Clone o repositório**
 
@@ -35,19 +44,20 @@ cd video-transcription-app
 
 2. **Instale as dependências**
 
-> Caso encontre erros de dependência, utilize o comando com o parâmetro `--legacy-peer-deps`:
+Se encontrar erros de dependência, use o comando com `--legacy-peer-deps`:
 
 ```bash
 npm install --legacy-peer-deps
 ```
 
-3. **Configure as variáveis de ambiente** (opcional)
+3. **Configuração da API de Transcrição**
 
-```bash
-cp .env.example .env.local
-```
+Por padrão, a aplicação está pronta para consumir uma API local de transcrição (exemplo: [MetadadosPy/manipulacao_metadados](https://github.com/MetadadosPy/manipulacao_metadados)).
 
-Adicione sua chave da API do OpenAI (se usar transcrição real):
+- Certifique-se de que a API está rodando localmente em `http://localhost:8000/transcribe`.
+- O arquivo `services/transcription-api.ts` já está configurado para enviar o vídeo para esse endpoint.
+
+Se quiser usar a API do OpenAI Whisper, descomente o trecho correspondente no mesmo arquivo e adicione sua chave no `.env.local`:
 
 ```env
 NEXT_PUBLIC_OPENAI_API_KEY=sua_chave_aqui
@@ -67,134 +77,97 @@ Abra o navegador e acesse:
 http://localhost:3000
 ```
 
+---
+
 ## 📁 Estrutura do Projeto
 
-\`\`\`
+```
 ├── app/                          # Páginas Next.js
 │   ├── globals.css              # Estilos globais
 │   ├── layout.tsx               # Layout principal
 │   └── page.tsx                 # Página inicial
-├── components/                   # Componentes React
-│   ├── video-uploader.tsx       # Componente de upload
+├── components/                   # Componentes React reutilizáveis
+│   ├── video-uploader.tsx       # Upload de vídeo
 │   ├── video-player.tsx         # Player de vídeo
 │   └── transcription-panel.tsx  # Painel de transcrição
 ├── hooks/                       # Hooks customizados
-│   └── use-video-sync.tsx       # Hook de sincronização
+│   └── use-video-sync.tsx       # Sincronização do player
 ├── services/                    # Serviços de API
-│   └── transcription-api.ts     # API de transcrição
-├── types/                       # Definições TypeScript
+│   └── transcription-api.ts     # Função para transcrição
+├── types/                       # Tipos TypeScript
 │   └── transcription.ts         # Tipos da transcrição
-└── src/                         # Versão React puro (alternativa)
-    ├── components/              # Componentes JSX
-    ├── hooks/                   # Hooks personalizados
-    ├── api/                     # Funções de API
-    └── styles/                  # Arquivos CSS
-\`\`\`
+├── src/                         # Versão alternativa em React puro
+│   ├── components/              # Componentes JSX
+│   ├── hooks/                   # Hooks personalizados
+│   ├── api/                     # Funções de API
+│   └── styles/                  # Arquivos CSS
+└── styles/                      # Estilos globais e específicos
+```
+
+---
 
 ## 🎯 Como Usar
 
 1. **Faça Upload do Vídeo**
-   - Arraste e solte um arquivo de vídeo na área designada
-   - Ou clique para selecionar um arquivo
-   - Formatos suportados: MP4, WebM, AVI, MOV
-
+   - Arraste e solte um arquivo de vídeo na área indicada ou clique para selecionar.
 2. **Aguarde a Transcrição**
-   - A transcrição será gerada automaticamente
-   - O processo pode levar alguns segundos
-
+   - O vídeo será enviado para a API e a transcrição aparecerá sincronizada.
 3. **Navegue pela Transcrição**
-   - O segmento atual é destacado durante a reprodução
-   - Clique em qualquer segmento para pular para aquele momento
-   - Use os controles do player para pausar/reproduzir
+   - Clique em qualquer segmento para pular para aquele momento do vídeo.
+   - O segmento atual é destacado durante a reprodução.
+
+---
 
 ## 🔧 Configuração da API
 
-### OpenAI Whisper (Produção)
+- **API Local**: Por padrão, a aplicação envia o vídeo para `http://localhost:8000/transcribe`.
+- **API OpenAI Whisper**: Descomente o código no `transcription-api.ts` e adicione sua chave no `.env.local`.
+- **API Personalizada**: Altere a URL no `transcription-api.ts` para o endpoint desejado.
 
-Para usar a API real do Whisper, descomente o código em `services/transcription-api.ts`:
-
-\`\`\`typescript
-const formData = new FormData()
-formData.append('file', videoFile)
-formData.append('model', 'whisper-1')
-formData.append('language', 'pt')
-formData.append('response_format', 'verbose_json')
-
-const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
-  },
-  body: formData
-})
-\`\`\`
-
-### API Personalizada
-
-Para integrar com sua própria API de transcrição:
-
-\`\`\`typescript
-const response = await fetch('https://sua-api.com/transcribe', {
-  method: 'POST',
-  body: formData
-})
-\`\`\`
+---
 
 ## 📱 Responsividade
 
-A aplicação é totalmente responsiva e funciona em:
+- **Desktop**: Layout em duas colunas
+- **Tablet**: Layout empilhado
+- **Mobile**: Interface otimizada para toque
 
-- 🖥️ **Desktop** - Layout em duas colunas
-- 📱 **Tablet** - Layout empilhado
-- 📱 **Mobile** - Interface otimizada para toque
+---
 
 ## 🎨 Personalização
 
-### Temas
+- Os estilos estão em `app/globals.css` e na pasta `styles/`.
+- Para mudar cores, edite as variáveis CSS em `globals.css`:
 
-Os estilos estão organizados em arquivos CSS separados:
-
-- `globals.css` - Estilos globais e layout
-- `upload.css` - Componente de upload
-- `player.css` - Player de vídeo
-- `transcript.css` - Painel de transcrição
-
-### Cores
-
-Para alterar o esquema de cores, modifique as variáveis CSS em `globals.css`:
-
-\`\`\`css
+```css
 :root {
   --background: #0a0a0a;
   --foreground: #ffffff;
   --accent: #666666;
 }
-\`\`\`
+```
+
+---
 
 ## 🚀 Deploy
 
-### Vercel (Recomendado)
+- **Vercel** (recomendado):
+  1. Conecte o repositório ao Vercel
+  2. Configure variáveis de ambiente
+  3. Deploy automático a cada push
+- **Outros provedores**: Netlify, Railway, Heroku, AWS Amplify
 
-1. Conecte seu repositório ao Vercel
-2. Configure as variáveis de ambiente
-3. Deploy automático a cada push
-
-### Outros Provedores
-
-A aplicação pode ser deployada em qualquer provedor que suporte Next.js:
-
-- Netlify
-- Railway
-- Heroku
-- AWS Amplify
+---
 
 ## 🤝 Contribuição
 
 1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
+2. Crie uma branch para sua feature (`git checkout -b feature/NomeDaFeature`)
+3. Commit suas mudanças (`git commit -m 'feat: Minha feature'`)
+4. Push para a branch (`git push origin feature/NomeDaFeature`)
 5. Abra um Pull Request
+
+---
 
 ## 📝 Roadmap
 
@@ -206,25 +179,35 @@ A aplicação pode ser deployada em qualquer provedor que suporte Next.js:
 - [ ] Integração com YouTube
 - [ ] API de webhooks
 
+---
+
 ## 🐛 Problemas Conhecidos
 
-- Arquivos de vídeo muito grandes podem causar lentidão
+- Arquivos de vídeo grandes podem causar lentidão
 - Alguns formatos de vídeo podem não ser suportados em todos os navegadores
 - A transcrição mock é limitada a 30 segundos
+
+---
 
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
+---
+
 ## 👥 Autores
 
-- **Seu Nome** - *Desenvolvimento inicial* - [@seuusuario](https://github.com/seuusuario)
+- **Seu Nome** – Desenvolvimento inicial – [@seuusuario](https://github.com/seuusuario)
+
+---
 
 ## 🙏 Agradecimentos
 
 - OpenAI pela API Whisper
 - Comunidade React
 - Contribuidores do projeto
+
+---
 
 ## 📞 Suporte
 
