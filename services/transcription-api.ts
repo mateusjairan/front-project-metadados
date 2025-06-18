@@ -40,9 +40,9 @@ export async function getTranscription(videoFile: File): Promise<TranscriptionSe
 
   // Envia o arquivo de vídeo para a API local
   const formData = new FormData()
-  formData.append('video', videoFile)
+  formData.append('file', videoFile)
 
-  const response = await fetch('http://localhost:8000/transcribe', {
+  const response = await fetch('http://localhost:8000/transcribe/', {
     method: 'POST',
     body: formData
   })
