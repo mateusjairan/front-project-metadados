@@ -176,7 +176,6 @@ http://localhost:3000
 - [ ] Busca na transcrição
 - [ ] Edição manual da transcrição
 - [ ] Suporte a legendas
-- [ ] Integração com YouTube
 - [ ] API de webhooks
 
 ---
@@ -189,15 +188,9 @@ http://localhost:3000
 
 ---
 
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
 ## 👥 Autores
 
-- **Seu Nome** – Desenvolvimento inicial – [@seuusuario](https://github.com/seuusuario)
+- **Mateus Jairan** – Desenvolvimento inicial – [@mateusjairan](https://github.com/mateusjairan)
 
 ---
 
@@ -213,9 +206,8 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 Se você encontrar algum problema ou tiver dúvidas:
 
-1. Verifique as [Issues existentes](https://github.com/seu-usuario/video-transcription-app/issues)
-2. Crie uma nova issue se necessário
-3. Entre em contato: seuemail@exemplo.com
+1. Crie uma nova issue se necessário
+2. Entre em contato: mateusjairan@gmail.com
 
 ---
 

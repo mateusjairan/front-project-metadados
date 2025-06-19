@@ -13,7 +13,7 @@ const queryClient = new QueryClient()
 function AccessModal({ onAccessGranted }: { onAccessGranted: () => void }) {
   const [input, setInput] = useState("")
   const [error, setError] = useState("")
-  const accessPhrase = "marcos chupa pica"
+  const accessPhrase = "ola mundo"
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -51,7 +51,7 @@ function AccessModal({ onAccessGranted }: { onAccessGranted: () => void }) {
       >
         <h2 style={{ color: "#fff", marginBottom: 16 }}>Acesso restrito</h2>
         <p style={{ color: "#ccc", marginBottom: 16 }}>
-          Digite a frase de acesso para continuar: "marcos chupa pica"
+          Digite a frase de acesso para continuar: "ola mundo"
         </p>
         <input
           type="text"
