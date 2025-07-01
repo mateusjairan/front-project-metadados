@@ -2,9 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Meta-Transcrição',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'Meta-Transcrição'
 }
 
 export default function RootLayout({

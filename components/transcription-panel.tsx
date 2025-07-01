@@ -49,12 +49,12 @@ export default function TranscriptionPanel({
     return (
       <div className="transcription-panel">
         <div className="transcription-header">
-          <h3>Transcription</h3>
+          <h3>Transcrição </h3>
         </div>
         <div className="transcription-loading">
           <div className="loading-spinner"></div>
-          <p>Generating transcription...</p>
-          <p className="loading-subtitle">This may take a few moments</p>
+            <p>Gerando transcrição...</p>
+          <p className="loading-subtitle">Isso pode levar algum tempo. Tenha paciência.</p>
         </div>
       </div>
     )
@@ -64,11 +64,11 @@ export default function TranscriptionPanel({
     return (
       <div className="transcription-panel">
         <div className="transcription-header">
-          <h3>Transcription</h3>
+          <h3>Transcrição</h3>
         </div>
         <div className="transcription-error">
-          <p>Error generating transcription</p>
-          <p className="error-message">Please try again later</p>
+          <p>Erro ao gerar transcrição</p>
+          <p className="error-message">Por favor tente de novo mais tarde.</p>
         </div>
       </div>
     )
@@ -77,7 +77,7 @@ export default function TranscriptionPanel({
   return (
     <div className="transcription-panel">
       <div className="transcription-header">
-        <h3>Transcription</h3>
+        <h3>Transcrição</h3>
         <div className="transcription-status">
           <span className={`status-indicator ${isPlaying ? "playing" : "paused"}`}></span>
           <span>{formatTime(currentTime)}</span>
@@ -87,7 +87,7 @@ export default function TranscriptionPanel({
       <div className="transcription-content">
         {transcription.length === 0 ? (
           <div className="transcription-empty">
-            <p>No transcription available</p>
+            <p>Sem transcrição disponível.</p>
           </div>
         ) : (
           <div className="transcription-segments">
