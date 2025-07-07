@@ -39,19 +39,19 @@ export async function getTranscription(videoFile: File): Promise<TranscriptionSe
   // await new Promise((resolve) => setTimeout(resolve, 2000))
 
   // Envia o arquivo de vídeo para a API local
-  // const formData = new FormData()
-  // formData.append('file', videoFile)
+  const formData = new FormData()
+  formData.append('file', videoFile)
 
-  // const response = await fetch('http://localhost:8000/transcribe/', {
-  //   method: 'POST',
-  //   body: formData
-  // })
+  const response = await fetch('http://localhost:8000/transcribe/', {
+    method: 'POST',
+    body: formData
+  })
 
-  // if (!response.ok) {
-  //   throw new Error('Erro ao obter transcrição da API')
-  // }
+  if (!response.ok) {
+    throw new Error('Erro ao obter transcrição da API')
+  }
 
   // // Supondo que a resposta seja um array de segmentos no formato correto
-  // const data = await response.json()
-  return mockTranscription
+  const data = await response.json()
+  return data as TranscriptionSegment[]
 }

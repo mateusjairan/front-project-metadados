@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getTranscription } from "@/services/transcription-api"
 import type { TranscriptionSegment } from "@/types/transcription"
@@ -29,6 +29,8 @@ export default function TranscriptionPanel({
     staleTime: Number.POSITIVE_INFINITY,
   })
 
+  const [searchTerm, setSearchTerm] = useState("")
+
   useEffect(() => {
     if (data) {
       onTranscriptionReceived(data)
@@ -44,6 +46,10 @@ export default function TranscriptionPanel({
   const isSegmentActive = (segment: TranscriptionSegment) => {
     return currentTime >= segment.start && currentTime <= segment.end
   }
+
+  const filteredSegments = transcription.filter(segment =>
+    segment.text.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   if (isLoading) {
     return (
@@ -78,6 +84,8 @@ export default function TranscriptionPanel({
     <div className="transcription-panel">
       <div className="transcription-header">
         <h3>Transcrição</h3>
+        <input type="text" placeholder="Buscar" type="search" name="" id="" value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)} className="transcription-search-input" />
         <div className="transcription-status">
           <span className={`status-indicator ${isPlaying ? "playing" : "paused"}`}></span>
           <span>{formatTime(currentTime)}</span>
@@ -91,7 +99,7 @@ export default function TranscriptionPanel({
           </div>
         ) : (
           <div className="transcription-segments">
-            {transcription.map((segment, index) => (
+            {filteredSegments.map((segment, index) => (
               <div
                 key={index}
                 className={`transcription-segment ${isSegmentActive(segment) ? "active" : ""}`}
