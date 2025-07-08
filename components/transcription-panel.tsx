@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getTranscription } from "@/services/transcription-api"
 import type { TranscriptionSegment } from "@/types/transcription"
+import Highlighter from "react-highlight-words"
 
 interface TranscriptionPanelProps {
   videoFile: File
@@ -84,7 +85,7 @@ export default function TranscriptionPanel({
     <div className="transcription-panel">
       <div className="transcription-header">
         <h3>Transcrição</h3>
-        <input type="text" placeholder="Buscar" type="search" name="" id="" value={searchTerm}
+        <input type="text" placeholder="Buscar na transcrição" type="search" name="" id="" value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)} className="transcription-search-input" />
         <div className="transcription-status">
           <span className={`status-indicator ${isPlaying ? "playing" : "paused"}`}></span>
@@ -108,7 +109,14 @@ export default function TranscriptionPanel({
                 <div className="segment-time">
                   {formatTime(segment.start)} - {formatTime(segment.end)}
                 </div>
-                <div className="segment-text">{segment.text}</div>
+                <div className="segment-text">
+                  <Highlighter
+                    highlightClassName="highlight"
+                    searchWords={[searchTerm]}
+                    autoEscape={true}
+                    textToHighlight={segment.text}
+                  />
+                </div>
               </div>
             ))}
           </div>

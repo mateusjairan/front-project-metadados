@@ -385,3 +385,10 @@ body {
   outline: none;
   padding: 3px;
 }
+
+.highlight {
+  background-color: #3ba7ff;
+  color: #000;
+  padding: 0 2px;
+  border-radius: 2px;
+}

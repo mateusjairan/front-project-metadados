@@ -1,4 +1,5 @@
 import type { TranscriptionSegment } from "@/types/transcription"
+import { mock } from "node:test"
 
 // Mock data para demonstração
 const mockTranscription: TranscriptionSegment[] = [
@@ -54,4 +55,5 @@ export async function getTranscription(videoFile: File): Promise<TranscriptionSe
   // // Supondo que a resposta seja um array de segmentos no formato correto
   const data = await response.json()
   return data as TranscriptionSegment[]
+  // return mockTranscription //retun usado para testes locais
 }
