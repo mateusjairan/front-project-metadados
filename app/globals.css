@@ -222,7 +222,7 @@ body {
 .transcription-content {
   flex: 1;
   overflow-y: auto;
-  max-height: 350px;
+  max-height: 680px;
 }
 
 .transcription-segments {
@@ -378,7 +378,7 @@ body {
 
 .transcription-search-input{
   background-color: #0a0a0a;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #ffffff;
   border-radius: 8px;
   border: 1px solid #666;
@@ -391,4 +391,30 @@ body {
   color: #000;
   padding: 0 2px;
   border-radius: 2px;
+}
+
+.download-button {
+  height: 60px;
+  width: 80px;
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4a4a4a 0%, #666666 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.download-button:hover {
+  background: linear-gradient(135deg, #555555 0%, #777777 100%);
+  transform: translateY(-1px);
+}
+
+.download-button img {
+  width: 50px;
+  height: 50px;
 }

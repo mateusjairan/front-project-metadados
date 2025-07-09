@@ -55,5 +55,5 @@ export async function getTranscription(videoFile: File): Promise<TranscriptionSe
   // // Supondo que a resposta seja um array de segmentos no formato correto
   const data = await response.json()
   return data as TranscriptionSegment[]
-  // return mockTranscription //retun usado para testes locais
+  // return mockTranscription //return usado para testes locais
 }
