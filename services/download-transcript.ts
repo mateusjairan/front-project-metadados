@@ -45,3 +45,36 @@ export function downloadTranscript() {
     alert("Erro ao exportar transcrição");
   }
 }
+
+export function downloadTranscriptAsTxt() {
+  try {
+    // Captura todos os segmentos do DOM
+    const segments = Array.from(
+      document.querySelectorAll('.transcription-segment')
+    );
+
+    // Processa os dados no formato final
+    const txtContent = segments.map(segment => {
+      const timeText = segment.querySelector('.segment-time')?.textContent?.trim() || "";
+      const text = segment.querySelector('.segment-text')?.textContent?.trim() || "";
+      
+      return `${timeText}\n${text}`;
+    }).join('\n\n'); // Dois quebras de linha entre segmentos
+
+    // Gera o arquivo TXT
+    const blob = new Blob([txtContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `transcricao-${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+
+  } catch (error) {
+    console.error("Erro ao exportar transcrição:", error);
+    alert("Erro ao exportar transcrição");
+  }
+}

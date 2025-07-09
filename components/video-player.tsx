@@ -1,7 +1,7 @@
 "use client"
 
 import { forwardRef } from "react"
-import { downloadTranscript } from "@/services/download-transcript"
+import { downloadTranscript, downloadTranscriptAsTxt } from "@/services/download-transcript"
 import { TranscriptionSegment } from "@/types/transcription"
 
 
@@ -32,12 +32,18 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
         <div className="video-info">
           <h3>Baixar Transcrição</h3>
-           <button 
+          <div className="menu-button">
+            <button 
             className="download-button" 
             onClick={downloadTranscript}>
            <img src={"/json-file.png"} alt="Exportar JSON" />
-
           </button>
+          <button 
+            className="download-button" 
+            onClick={downloadTranscriptAsTxt}>
+           <img src={"/txt-file.png"} alt="Exportar TXT" />
+          </button>
+          </div>
         </div>
       </div>
     )
