@@ -85,7 +85,7 @@ export default function TranscriptionPanel({
     <div className="transcription-panel">
       <div className="transcription-header">
         <h3>Transcrição</h3>
-        <input type="text" placeholder="Buscar na transcrição" type="search" name="" id="" value={searchTerm}
+        <input placeholder="Buscar na transcrição" type="search" name="" id="" value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)} className="transcription-search-input" />
         <div className="transcription-status">
           <span className={`status-indicator ${isPlaying ? "playing" : "paused"}`}></span>
