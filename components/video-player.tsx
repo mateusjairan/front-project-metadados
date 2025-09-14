@@ -32,8 +32,10 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
         <div className="video-info">
           <h3>Baixar Transcrição</h3>
+          <input type="checkbox" name="check-timestamp" id="check-timestamp" />
+          <label htmlFor="check-timestamp">Remover marcador de tempo do texto</label>
           <div className="menu-button">
-            <button 
+          <button 
             className="download-button" 
             onClick={downloadTranscript}>
            <img src={"/json-file.png"} alt="Exportar JSON" />

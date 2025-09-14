@@ -424,3 +424,71 @@ body {
   flex-direction: row;
   column-gap: 10px;
 }
+
+/* Estilização do Checkbox Personalizado */
+#check-timestamp {
+  /* Esconde o checkbox padrão mas o mantém acessível */
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+#check-timestamp + label {
+  position: relative;
+  padding-left: 28px; /* Espaço para o checkbox personalizado */
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.9rem;
+  color: #aaaaaa;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px; /* Garante que o label tenha altura */
+  margin-bottom: 1rem; /* Adiciona espaço abaixo dos botões de download */
+}
+
+/* A caixa do checkbox personalizado */
+#check-timestamp + label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid #666;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+/* A marca de seleção (check), escondida por padrão */
+#check-timestamp + label::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 45%; /* Ajuste fino para centralizar */
+  transform: translateY(-50%) rotate(45deg);
+  width: 6px;
+  height: 12px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Mostra a marca de seleção quando o checkbox está marcado */
+#check-timestamp:checked + label::after {
+  opacity: 1;
+}
+
+/* Muda a cor da caixa quando marcado */
+#check-timestamp:checked + label::before {
+  background-color: #4ade80; /* Verde do indicador 'playing' */
+  border-color: #4ade80;
+}
+
+/* Efeito hover */
+#check-timestamp + label:hover::before {
+  border-color: #888;
+}

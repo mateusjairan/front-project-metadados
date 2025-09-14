@@ -1,5 +1,11 @@
+function shouldRemoveTimestamp(): boolean {
+  const removeTimestampCheckbox = document.getElementById('check-timestamp') as HTMLInputElement;
+  return removeTimestampCheckbox?.checked ?? false;
+}
+
 export function downloadTranscript() {
   try {
+    const removeTimestamp = shouldRemoveTimestamp();
     // Captura todos os segmentos do DOM
     const segments = Array.from(
       document.querySelectorAll('.transcription-segment')
@@ -16,10 +22,13 @@ export function downloadTranscript() {
       const timeText = segment.querySelector('.segment-time')?.textContent?.trim() || "";
       const text = segment.querySelector('.segment-text')?.textContent?.trim() || "";
 
+      if (removeTimestamp) {
+        return { text };
+      }
+
       const [startStr, endStr] = timeText.split(" - ");
       const start = parseTime(startStr);
       const end = parseTime(endStr);
-
       return {
         start,
         end,
@@ -48,6 +57,7 @@ export function downloadTranscript() {
 
 export function downloadTranscriptAsTxt() {
   try {
+    const removeTimestamp = shouldRemoveTimestamp();
     // Captura todos os segmentos do DOM
     const segments = Array.from(
       document.querySelectorAll('.transcription-segment')
@@ -57,7 +67,10 @@ export function downloadTranscriptAsTxt() {
     const txtContent = segments.map(segment => {
       const timeText = segment.querySelector('.segment-time')?.textContent?.trim() || "";
       const text = segment.querySelector('.segment-text')?.textContent?.trim() || "";
-      
+
+      if (removeTimestamp) {
+        return text;
+      }
       return `${timeText}\n${text}`;
     }).join('\n\n'); // Dois quebras de linha entre segmentos
 
