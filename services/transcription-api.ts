@@ -1,59 +1,27 @@
-import type { TranscriptionSegment } from "@/types/transcription"
-import { mock } from "node:test"
+import type { Video } from "@/types/video";
+import { API_BASE_URL } from "@/lib/constants";
 
-// Mock data para demonstração
-const mockTranscription: TranscriptionSegment[] = [
-  {
-    start: 0,
-    end: 3.5,
-    text: "Welcome to this video demonstration of our transcription service.",
-  },
-  {
-    start: 3.5,
-    end: 7.2,
-    text: "In this example, we'll show how the transcription synchronizes with the video playback.",
-  },
-  {
-    start: 7.2,
-    end: 11.8,
-    text: "You can click on any segment to jump to that specific moment in the video.",
-  },
-  {
-    start: 11.8,
-    end: 15.5,
-    text: "The current segment is highlighted as the video plays, providing real-time synchronization.",
-  },
-  {
-    start: 15.5,
-    end: 19.3,
-    text: "This technology can be used for educational content, interviews, and accessibility purposes.",
-  },
-  {
-    start: 19.3,
-    end: 23.0,
-    text: "The transcription is generated automatically and includes precise timestamps.",
-  },
-]
+export async function createTranscription(videoFile: File): Promise<Video> {
+  const formData = new FormData();
+  formData.append('file', videoFile);
 
-export async function getTranscription(videoFile: File): Promise<TranscriptionSegment[]> {
-  // Simular delay da API
-  // await new Promise((resolve) => setTimeout(resolve, 2000))
+  try {
+    const response = await fetch(`${API_BASE_URL}/transcribe/`, {
+      method: 'POST',
+      body: formData,
+      // Note: Don't set Content-Type header when using FormData with fetch,
+      // the browser will automatically set it with the correct boundary.
+    });
 
-  // Envia o arquivo de vídeo para a API local
-  const formData = new FormData()
-  formData.append('file', videoFile)
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({})); // try to parse error, default to empty object
+      throw new Error(errorData.detail || `Failed to create transcription: ${response.statusText}`);
+    }
 
-  const response = await fetch('http://localhost:8000/transcribe/', {
-    method: 'POST',
-    body: formData
-  })
-
-  if (!response.ok) {
-    throw new Error('Erro ao obter transcrição da API')
+    const data = await response.json();
+    return data as Video;
+  } catch (error) {
+    console.error("Error creating transcription:", error);
+    throw error; // Re-throw to be caught by react-query's onError
   }
-
-  // // Supondo que a resposta seja um array de segmentos no formato correto
-  const data = await response.json()
-  return data as TranscriptionSegment[]
-  // return mockTranscription //return usado para testes locais
 }

@@ -1,0 +1,77 @@
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table thead tr {
+  background-color: #1a1a1a;
+}
+
+.table th {
+  font-size: 14px;
+  font-weight: 600;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #1f1f1f;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.actionsCell {
+    display: flex;
+    gap: 10px;
+}
+
+.actionButton {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.actionButton:hover {
+  background-color: #444;
+  border-color: #777;
+}
+
+.deleteButton {
+  background-color: #4a1d1d;
+  border-color: #8f3d3d;
+}
+
+.deleteButton:hover {
+  background-color: #6b2a2a;
+  border-color: #a35353;
+}
