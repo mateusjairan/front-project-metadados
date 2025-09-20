@@ -1,8 +1,10 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef } from "react"
+import VideoConfirmationModal from "./video-confirmation-modal"
+
+import "../styles/VideoConfirmationModal.css"
 
 interface VideoUploaderProps {
   onVideoUpload: (file: File) => void
@@ -10,6 +12,8 @@ interface VideoUploaderProps {
 
 export default function VideoUploader({ onVideoUpload }: VideoUploaderProps) {
   const [isDragOver, setIsDragOver] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -22,31 +26,47 @@ export default function VideoUploader({ onVideoUpload }: VideoUploaderProps) {
     setIsDragOver(false)
   }
 
+  const processFile = (file: File) => {
+    if (file.type.startsWith("video/")) {
+      setSelectedFile(file)
+      setIsModalOpen(true)
+    }
+  }
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragOver(false)
 
     const files = e.dataTransfer.files
     if (files.length > 0) {
-      const file = files[0]
-      if (file.type.startsWith("video/")) {
-        onVideoUpload(file)
-      }
+      processFile(files[0])
     }
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files && files.length > 0) {
-      const file = files[0]
-      if (file.type.startsWith("video/")) {
-        onVideoUpload(file)
-      }
+      processFile(files[0])
     }
   }
 
   const handleButtonClick = () => {
     fileInputRef.current?.click()
+  }
+
+  const handleConfirmUpload = () => {
+    if (selectedFile) {
+      onVideoUpload(selectedFile)
+    }
+    handleCloseModal()
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedFile(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
   }
 
   return (
@@ -78,6 +98,13 @@ export default function VideoUploader({ onVideoUpload }: VideoUploaderProps) {
       </div>
 
       <input ref={fileInputRef} type="file" accept="video/*" onChange={handleFileSelect} style={{ display: "none" }} />
+
+      <VideoConfirmationModal
+        isOpen={isModalOpen}
+        file={selectedFile}
+        onConfirm={handleConfirmUpload}
+        onClose={handleCloseModal}
+      />
     </div>
   )
 }
