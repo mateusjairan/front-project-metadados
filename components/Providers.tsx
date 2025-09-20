@@ -12,19 +12,13 @@ async function initMocks() {
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
-  const [isMockingEnabled, setIsMockingEnabled] = useState(false)
 
   useEffect(() => {
+    // Start MSW mock server in development environment
     if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
-      initMocks().then(() => {
-        setIsMockingEnabled(true)
-      })
+      initMocks()
     }
   }, [])
-
-  if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled" && !isMockingEnabled) {
-    return null // or a loading spinner
-  }
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

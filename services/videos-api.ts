@@ -67,3 +67,26 @@ export async function getTranscriptionSegments(jsonUrl: string): Promise<Transcr
         return [];
     }
 }
+
+export async function updateVideo({ videoId, data }: { videoId: string, data: Partial<Pick<Video, 'nome'>> }): Promise<Video> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/videos/${videoId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.detail || `Failed to update video: ${response.statusText}`);
+    }
+
+    const updatedVideo = await response.json();
+    return updatedVideo;
+  } catch (error) {
+    console.error(`Error updating video ${videoId}:`, error);
+    throw error;
+  }
+}

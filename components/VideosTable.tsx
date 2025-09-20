@@ -51,8 +51,8 @@ export default function VideosTable({ videos }: VideosTableProps) {
               <td>{formatDuration(video.duracao)}</td>
               <td>{formatDate(video.data_transcricao)}</td>
               <td className={styles.actionsCell}>
-                <Link href={`/videos/${video.id}`} passHref>
-                  <a className={styles.actionButton}>Detalhes</a>
+                <Link href={`/videos/${video.id}`} className={styles.actionButton}>
+                  Detalhes
                 </Link>
                 <DeleteButton videoId={video.id} />
               </td>

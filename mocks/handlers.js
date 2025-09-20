@@ -23,6 +23,14 @@ export const handlers = [
     return HttpResponse.json(video)
   }),
 
+  // Handles a GET request for a video file stream
+  http.get(`${API_BASE_URL}/videos/stream/:fileName`, () => {
+    // In a real app, this would stream the video.
+    // In our mock, we can just forward the request to the static placeholder file.
+    // Note: This requires the browser to be on the same origin, which it is.
+    return fetch('/placeholder.mp4')
+  }),
+
   // Handles a GET request for transcription segments
   http.get(`/api/mock-data/:videoId.json`, ({ params }) => {
     const { videoId } = params
