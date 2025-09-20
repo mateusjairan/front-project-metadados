@@ -79,6 +79,42 @@ http://localhost:3000
 
 ---
 
+## 🌐 Ambiente de Desenvolvimento e Mocks
+
+Este projeto utiliza o **Mock Service Worker (MSW)** para simular a API do backend, permitindo o desenvolvimento e a visualização do front-end de forma totalmente independente.
+
+### Como Usar o Ambiente Mock
+
+Por padrão, o ambiente de mock já vem ativado. Ao rodar o projeto em modo de desenvolvimento, todas as chamadas de API serão interceptadas pelo MSW, que retornará dados falsos pré-definidos.
+
+1.  **Inicie o projeto:**
+    ```bash
+    npm run dev
+    ```
+2.  **Desenvolva sem o Backend:**
+    A aplicação funcionará como se estivesse conectada à API real, utilizando os dados definidos em `/mocks/db.js`. Você pode visualizar a listagem de vídeos, deletar, e fazer upload de novos vídeos (que resultarão em uma resposta mockada).
+
+### Desabilitando os Mocks
+
+Para conectar a aplicação a uma API real (seja local ou em produção), basta desabilitar o sistema de mocks.
+
+1.  Abra o arquivo `.env.local` na raiz do projeto.
+2.  Altere o valor da variável de ambiente para "disabled":
+    ```env
+    NEXT_PUBLIC_API_MOCKING="disabled"
+    ```
+3.  Reinicie o servidor de desenvolvimento.
+
+### Estrutura dos Mocks
+
+A lógica do mock da API está centralizada na pasta `/mocks`:
+
+-   `/mocks/db.js`: Contém a "base de dados" em memória. Se precisar de mais ou diferentes dados para seus testes, pode adicioná-los aqui.
+-   `/mocks/handlers.js`: Define os "manipuladores" de requisição. Cada handler intercepta uma rota da API (ex: `GET /videos`) e define qual resposta deve ser enviada. Se a API crescer, novos handlers podem ser adicionados a este arquivo.
+-   `/mocks/browser.js`: Configura e inicia o MSW para o ambiente do navegador.
+
+---
+
 ## 📁 Estrutura do Projeto
 
 ```
