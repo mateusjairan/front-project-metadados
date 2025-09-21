@@ -1,28 +1,42 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { getTranscription } from "@/services/transcription-api"
 import type { TranscriptionSegment } from "@/types/transcription"
 import Highlighter from "react-highlight-words"
-import styles from "./TranscriptionPanel.module.css"
 
 interface TranscriptionPanelProps {
+  videoFile: File
   transcription: TranscriptionSegment[]
   currentTime: number
   isPlaying: boolean
+  onTranscriptionReceived: (segments: TranscriptionSegment[]) => void
   onTranscriptionClick: (startTime: number) => void
-  isLoading?: boolean;
-  error?: Error | null;
 }
 
 export default function TranscriptionPanel({
+  videoFile,
   transcription,
   currentTime,
   isPlaying,
+  onTranscriptionReceived,
   onTranscriptionClick,
-  isLoading,
-  error,
 }: TranscriptionPanelProps) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["transcription", videoFile.name],
+    queryFn: () => getTranscription(videoFile),
+    enabled: !!videoFile,
+    staleTime: Number.POSITIVE_INFINITY,
+  })
+
   const [searchTerm, setSearchTerm] = useState("")
+
+  useEffect(() => {
+    if (data) {
+      onTranscriptionReceived(data)
+    }
+  }, [data, onTranscriptionReceived])
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -40,13 +54,14 @@ export default function TranscriptionPanel({
 
   if (isLoading) {
     return (
-      <div className={styles.transcriptionPanel}>
-        <div className={styles.transcriptionHeader}>
-          <h3>Transcrição</h3>
+      <div className="transcription-panel">
+        <div className="transcription-header">
+          <h3>Transcrição </h3>
         </div>
-        <div className={styles.transcriptionLoading}>
-          <div className={"loading-spinner"}></div>
-          <p>Carregando transcrição...</p>
+        <div className="transcription-loading">
+          <div className="loading-spinner"></div>
+            <p>Gerando transcrição...</p>
+          <p className="loading-subtitle">Isso pode levar algum tempo. Tenha paciência.</p>
         </div>
       </div>
     )
@@ -54,54 +69,49 @@ export default function TranscriptionPanel({
 
   if (error) {
     return (
-      <div className={styles.transcriptionPanel}>
-        <div className={styles.transcriptionHeader}>
+      <div className="transcription-panel">
+        <div className="transcription-header">
           <h3>Transcrição</h3>
         </div>
-        <div className={styles.transcriptionError}>
-          <p>Erro ao carregar transcrição</p>
-          <p className={styles.errorMessage}>{error.message}</p>
+        <div className="transcription-error">
+          <p>Erro ao gerar transcrição</p>
+          <p className="error-message">Por favor tente de novo mais tarde.</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className={styles.transcriptionPanel}>
-      <div className={styles.transcriptionHeader}>
+    <div className="transcription-panel">
+      <div className="transcription-header">
         <h3>Transcrição</h3>
-        <input
-          placeholder="Buscar na transcrição"
-          type="search"
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          className={styles.transcriptionSearchInput}
-        />
-        <div className={styles.transcriptionStatus}>
-          <span className={`${styles.statusIndicator} ${isPlaying ? styles.playing : ""}`}></span>
+        <input placeholder="Buscar na transcrição" type="search" name="" id="" value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)} className="transcription-search-input" />
+        <div className="transcription-status">
+          <span className={`status-indicator ${isPlaying ? "playing" : "paused"}`}></span>
           <span>{formatTime(currentTime)}</span>
         </div>
       </div>
 
-      <div className={styles.transcriptionContent}>
+      <div className="transcription-content">
         {transcription.length === 0 ? (
-          <div className={styles.transcriptionEmpty}>
+          <div className="transcription-empty">
             <p>Sem transcrição disponível.</p>
           </div>
         ) : (
-          <div className={styles.transcriptionSegments}>
+          <div className="transcription-segments">
             {filteredSegments.map((segment, index) => (
               <div
                 key={index}
-                className={`${styles.transcriptionSegment} ${isSegmentActive(segment) ? styles.active : ""}`}
+                className={`transcription-segment ${isSegmentActive(segment) ? "active" : ""}`}
                 onClick={() => onTranscriptionClick(segment.start)}
               >
-                <div className={styles.segmentTime}>
+                <div className="segment-time">
                   {formatTime(segment.start)} - {formatTime(segment.end)}
                 </div>
-                <div className={styles.segmentText}>
+                <div className="segment-text">
                   <Highlighter
-                    highlightClassName={styles.highlight}
+                    highlightClassName="highlight"
                     searchWords={[searchTerm]}
                     autoEscape={true}
                     textToHighlight={segment.text}

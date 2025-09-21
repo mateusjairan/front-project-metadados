@@ -2,8 +2,8 @@
 
 import { forwardRef } from "react"
 import { downloadTranscript, downloadTranscriptAsTxt } from "@/services/download-transcript"
-import type { TranscriptionSegment } from "@/types/transcription"
-import styles from "./VideoPlayer.module.css"
+import { TranscriptionSegment } from "@/types/transcription"
+
 
 interface VideoPlayerProps {
   videoUrl: string
@@ -11,12 +11,13 @@ interface VideoPlayerProps {
   onPlay: () => void
   onPause: () => void
   transcription: TranscriptionSegment[]
+  videoFile: File
 }
 
 const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
-  ({ videoUrl, onTimeUpdate, onPlay, onPause, transcription }, ref) => {
+  ({ videoUrl, onTimeUpdate, onPlay, onPause}, ref) => {
     return (
-      <div className={styles.videoPlayer}>
+      <div className="video-player">
         <video
           ref={ref}
           src={videoUrl}
@@ -24,26 +25,26 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           onTimeUpdate={onTimeUpdate}
           onPlay={onPlay}
           onPause={onPause}
-          className={styles.videoElement}
+          className="video-element"
         >
           Your browser does not support the video tag.
         </video>
 
-        <div className={styles.videoInfo}>
+        <div className="video-info">
           <h3>Baixar Transcrição</h3>
-          <input type="checkbox" name="check-timestamp" id="check-timestamp" className={styles.checkTimestamp} />
+          <input type="checkbox" name="check-timestamp" id="check-timestamp" />
           <label htmlFor="check-timestamp">Remover marcador de tempo do texto</label>
-          <div className={styles.menuButton}>
-            <button
-              className={styles.downloadButton}
-              onClick={() => downloadTranscript(transcription)}>
-              <img src={"/json-file.png"} alt="Exportar JSON" />
-            </button>
-            <button
-              className={styles.downloadButton}
-              onClick={() => downloadTranscriptAsTxt(transcription)}>
-              <img src={"/txt-file.png"} alt="Exportar TXT" />
-            </button>
+          <div className="menu-button">
+          <button 
+            className="download-button" 
+            onClick={downloadTranscript}>
+           <img src={"/json-file.png"} alt="Exportar JSON" />
+          </button>
+          <button 
+            className="download-button" 
+            onClick={downloadTranscriptAsTxt}>
+           <img src={"/txt-file.png"} alt="Exportar TXT" />
+          </button>
           </div>
         </div>
       </div>

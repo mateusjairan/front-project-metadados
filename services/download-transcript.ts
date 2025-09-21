@@ -1,31 +1,42 @@
-import type { TranscriptionSegment } from "@/types/transcription";
-
 function shouldRemoveTimestamp(): boolean {
   const removeTimestampCheckbox = document.getElementById('check-timestamp') as HTMLInputElement;
   return removeTimestampCheckbox?.checked ?? false;
 }
 
-function formatTime(seconds: number): string {
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-}
-
-export function downloadTranscript(segments: TranscriptionSegment[]) {
+export function downloadTranscript() {
   try {
     const removeTimestamp = shouldRemoveTimestamp();
+    // Captura todos os segmentos do DOM
+    const segments = Array.from(
+      document.querySelectorAll('.transcription-segment')
+    );
 
+    // Função auxiliar para converter tempo "MM:SS" em segundos
+    const parseTime = (timeStr: string): number => {
+      const [min, sec] = timeStr.split(":").map(Number);
+      return min * 60 + sec;
+    };
+
+    // Processa os dados no formato final
     const segmentsData = segments.map(segment => {
+      const timeText = segment.querySelector('.segment-time')?.textContent?.trim() || "";
+      const text = segment.querySelector('.segment-text')?.textContent?.trim() || "";
+
       if (removeTimestamp) {
-        return { text: segment.text };
+        return { text };
       }
+
+      const [startStr, endStr] = timeText.split(" - ");
+      const start = parseTime(startStr);
+      const end = parseTime(endStr);
       return {
-        start: segment.start,
-        end: segment.end,
-        text: segment.text,
+        start,
+        end,
+        text
       };
     });
 
+    // Gera o JSON final
     const jsonContent = JSON.stringify(segmentsData, null, 2);
     const blob = new Blob([jsonContent], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -39,23 +50,31 @@ export function downloadTranscript(segments: TranscriptionSegment[]) {
     setTimeout(() => URL.revokeObjectURL(url), 100);
 
   } catch (error) {
-    console.error("Erro ao exportar transcrição JSON:", error);
-    alert("Erro ao exportar transcrição JSON");
+    console.error("Erro ao exportar transcrição:", error);
+    alert("Erro ao exportar transcrição");
   }
 }
 
-export function downloadTranscriptAsTxt(segments: TranscriptionSegment[]) {
+export function downloadTranscriptAsTxt() {
   try {
     const removeTimestamp = shouldRemoveTimestamp();
+    // Captura todos os segmentos do DOM
+    const segments = Array.from(
+      document.querySelectorAll('.transcription-segment')
+    );
 
+    // Processa os dados no formato final
     const txtContent = segments.map(segment => {
-      if (removeTimestamp) {
-        return segment.text;
-      }
-      const timeText = `${formatTime(segment.start)} - ${formatTime(segment.end)}`;
-      return `${timeText}\n${segment.text}`;
-    }).join('\n\n');
+      const timeText = segment.querySelector('.segment-time')?.textContent?.trim() || "";
+      const text = segment.querySelector('.segment-text')?.textContent?.trim() || "";
 
+      if (removeTimestamp) {
+        return text;
+      }
+      return `${timeText}\n${text}`;
+    }).join('\n\n'); // Dois quebras de linha entre segmentos
+
+    // Gera o arquivo TXT
     const blob = new Blob([txtContent], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
 
@@ -68,7 +87,7 @@ export function downloadTranscriptAsTxt(segments: TranscriptionSegment[]) {
     setTimeout(() => URL.revokeObjectURL(url), 100);
 
   } catch (error) {
-    console.error("Erro ao exportar transcrição TXT:", error);
-    alert("Erro ao exportar transcrição TXT");
+    console.error("Erro ao exportar transcrição:", error);
+    alert("Erro ao exportar transcrição");
   }
 }
