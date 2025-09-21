@@ -1,214 +1,98 @@
-# 🎥 Aplicação de Transcrição de Vídeo
+# 📊 Dashboard de Transcrição
 
-Uma aplicação web moderna desenvolvida em React e Next.js que permite fazer upload de vídeos e gerar transcrições automáticas sincronizadas com a reprodução do vídeo.
+Este é um projeto front-end para um dashboard de gerenciamento de transcrições de vídeo, desenvolvido como parte de uma tarefa de avaliação para desenvolvedor front-end sênior.
 
----
+## 📝 Descrição
 
-## ✨ Funcionalidades
+A aplicação é um dashboard moderno, responsivo e com tema escuro, construído para interagir com a API `ManipulaçãoMetadados-CPU 2.0`. Ela permite aos usuários visualizar, carregar, editar e excluir transcrições de vídeo de forma eficiente.
 
-- **Upload de Vídeo**: Interface intuitiva para arrastar e soltar arquivos de vídeo (MP4, WebM, AVI, MOV).
-- **Player de Vídeo**: Reprodutor HTML5 com controles personalizados.
-- **Transcrição Sincronizada**: Transcrição automática com timestamps, destacando o segmento atual.
-- **Navegação Inteligente**: Clique em qualquer trecho da transcrição para pular para aquele momento do vídeo.
-- **Tema Escuro**: Interface moderna, responsiva e agradável.
-- **Performance**: Cache inteligente com React Query.
+O projeto foi desenvolvido para ser totalmente funcional de forma independente do back-end, utilizando um ambiente de API mockada com **Mock Service Worker (MSW)**, garantindo uma experiência de desenvolvimento e teste desacoplada.
 
----
+## ✨ Tecnologias Utilizadas
 
-## 🚀 Tecnologias Utilizadas
-
-- **React 19** – Biblioteca principal de UI
-- **Next.js 15** – Framework React para SSR e rotas
-- **React Query (TanStack Query)** – Gerenciamento de requisições e cache
-- **TypeScript** – Tipagem estática
-- **CSS Puro** – Estilização customizada
-- **HTML5 Video** – Player nativo
-
----
+- **Framework**: [Next.js](https://nextjs.org/) (com App Router)
+- **Linguagem**: [TypeScript](https://www.typescriptlang.org/)
+- **Gerenciamento de Estado de Servidor**: [React Query (TanStack Query)](https://tanstack.com/query)
+- **Estilização**: CSS Puro com [CSS Modules](https://github.com/css-modules/css-modules)
+- **API Mocking**: [Mock Service Worker (MSW)](https://mswjs.io/)
+- **Ícones**: [Lucide React](https://lucide.dev/)
+- **Notificações (Toasts)**: [Sonner](https://sonner.emilkowal.ski/)
+- **Drag-and-Drop**: [React Dropzone](https://react-dropzone.js.org/)
 
 ## 📋 Pré-requisitos
 
-- Node.js 18 ou superior
-- npm (recomendado)
+Antes de começar, certifique-se de ter o seguinte instalado em sua máquina:
+- [Node.js](https://nodejs.org/) (versão 18 ou superior)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
 
----
+## 🚀 Como Instalar e Rodar
 
-## 🛠️ Instalação Passo a Passo
+Siga os passos abaixo para configurar e rodar o projeto localmente:
 
-1. **Clone o repositório**
+1.  **Clone o repositório:**
+    ```bash
+    git clone <URL_DO_REPOSITORIO>
+    cd <NOME_DA_PASTA>
+    ```
 
-```bash
-git clone https://github.com/seu-usuario/video-transcription-app.git
-cd video-transcription-app
-```
+2.  **Instale as dependências:**
+    ```bash
+    npm install
+    ```
 
-2. **Instale as dependências**
+3.  **Execute o projeto:**
+    ```bash
+    npm run dev
+    ```
 
-Se encontrar erros de dependência, use o comando com `--legacy-peer-deps`:
+4.  **Acesse a aplicação:**
+    Abra seu navegador e acesse `http://localhost:3000`.
 
-```bash
-npm install --legacy-peer-deps
-```
+> **Nota sobre o Ambiente Mock:**
+> Por padrão, o projeto inicia com o **Mock Service Worker (MSW) ativado**. Isso significa que todas as chamadas de API são interceptadas e respondidas por um servidor mock que roda no navegador. Você pode usar todas as funcionalidades da aplicação sem precisar de um back-end real. Para desativar, altere a variável `NEXT_PUBLIC_API_MOCKING` no arquivo `.env.local`.
 
-3. **Configuração da API de Transcrição**
+## 🌟 Funcionalidades Implementadas
 
-Por padrão, a aplicação está pronta para consumir uma API local de transcrição (exemplo: [MetadadosPy/manipulacao_metadados](https://github.com/MetadadosPy/manipulacao_metadados)).
-
-- Certifique-se de que a API está rodando localmente em `http://localhost:8000/transcribe`.
-- O arquivo `services/transcription-api.ts` já está configurado para enviar o vídeo para esse endpoint.
-
-Se quiser usar a API do OpenAI Whisper, descomente o trecho correspondente no mesmo arquivo e adicione sua chave no `.env.local`:
-
-```env
-NEXT_PUBLIC_OPENAI_API_KEY=sua_chave_aqui
-```
-
-4. **Execute o projeto**
-
-```bash
-npm run dev
-```
-
-5. **Acesse a aplicação**
-
-Abra o navegador e acesse:
-
-```
-http://localhost:3000
-```
-
----
+-   **Dashboard Principal**:
+    -   Listagem de todas as transcrições em uma tabela responsiva.
+    -   Visualização de nome, duração, idioma e data.
+-   **Ações Rápidas**:
+    -   **Visualizar**: Navega para uma página de detalhes completa.
+    -   **Editar**: Abre um modal para atualizar o nome do arquivo da transcrição.
+    -   **Excluir**: Abre um modal de confirmação antes de remover a transcrição.
+-   **Nova Transcrição**:
+    -   Página dedicada para upload de novos arquivos (`/transcrever`).
+    -   Componente de upload com suporte a "arrastar e soltar" (drag-and-drop).
+    -   Feedback visual em tempo real durante o processamento.
+    -   Redirecionamento automático e notificação de sucesso após o upload.
+-   **Página de Detalhes**:
+    -   Exibição completa dos metadados e do texto da transcrição.
+    -   **Visualização de Segmentos Interativos**: Uma lista dos segmentos de transcrição (timestamp e texto) que pode ser clicada para destacar trechos específicos.
 
 ## 📁 Estrutura do Projeto
 
+O código-fonte está organizado de forma lógica para promover escalabilidade e manutenibilidade:
+
 ```
-├── app/                          # Páginas Next.js
-│   ├── globals.css              # Estilos globais
-│   ├── layout.tsx               # Layout principal
-│   └── page.tsx                 # Página inicial
-├── components/                   # Componentes React reutilizáveis
-│   ├── video-uploader.tsx       # Upload de vídeo
-│   ├── video-player.tsx         # Player de vídeo
-│   └── transcription-panel.tsx  # Painel de transcrição
-├── hooks/                       # Hooks customizados
-│   └── use-video-sync.tsx       # Sincronização do player
-├── services/                    # Serviços de API
-│   └── transcription-api.ts     # Função para transcrição
-├── types/                       # Tipos TypeScript
-│   └── transcription.ts         # Tipos da transcrição
-├── src/                         # Versão alternativa em React puro
-│   ├── components/              # Componentes JSX
-│   ├── hooks/                   # Hooks personalizados
-│   ├── api/                     # Funções de API
-│   └── styles/                  # Arquivos CSS
-└── styles/                      # Estilos globais e específicos
+/app
+├── /components/ui/      # Componentes de UI genéricos e reutilizáveis (Modal, Botão, etc.)
+├── /features/           # Componentes complexos e específicos de funcionalidades
+│   ├── /dashboard/      # Componentes para o dashboard (Tabela, Modais de Edição/Exclusão)
+│   ├── /transcribe/     # Componentes para a página de upload
+│   └── /video-details/  # Componentes para a página de detalhes
+├── /lib/                # Lógica central da aplicação
+│   ├── api.ts           # Funções de chamada de API (fetch)
+│   ├── types.ts         # Definições de tipos TypeScript
+│   └── utils.ts         # Funções utilitárias
+├── /transcrever/        # Rota e página para nova transcrição
+├── /videos/[id]/        # Rota e página dinâmica para detalhes do vídeo
+├── layout.tsx           # Layout principal da aplicação
+└── page.tsx             # Página inicial (Dashboard)
+
+/src
+└── /mocks/              # Configuração do Mock Service Worker (MSW)
+    ├── browser.ts       # Worker para o navegador
+    ├── db.ts            # Banco de dados mock em memória
+    ├── handlers.ts      # Handlers que interceptam as requisições HTTP
+    └── MSWComponent.tsx # Componente que ativa o MSW
 ```
-
----
-
-## 🎯 Como Usar
-
-1. **Faça Upload do Vídeo**
-   - Arraste e solte um arquivo de vídeo na área indicada ou clique para selecionar.
-2. **Aguarde a Transcrição**
-   - O vídeo será enviado para a API e a transcrição aparecerá sincronizada.
-3. **Navegue pela Transcrição**
-   - Clique em qualquer segmento para pular para aquele momento do vídeo.
-   - O segmento atual é destacado durante a reprodução.
-
----
-
-## 🔧 Configuração da API
-
-- **API Local**: Por padrão, a aplicação envia o vídeo para `http://localhost:8000/transcribe`.
-- **API OpenAI Whisper**: Descomente o código no `transcription-api.ts` e adicione sua chave no `.env.local`.
-- **API Personalizada**: Altere a URL no `transcription-api.ts` para o endpoint desejado.
-
----
-
-## 📱 Responsividade
-
-- **Desktop**: Layout em duas colunas
-- **Tablet**: Layout empilhado
-- **Mobile**: Interface otimizada para toque
-
----
-
-## 🎨 Personalização
-
-- Os estilos estão em `app/globals.css` e na pasta `styles/`.
-- Para mudar cores, edite as variáveis CSS em `globals.css`:
-
-```css
-:root {
-  --background: #0a0a0a;
-  --foreground: #ffffff;
-  --accent: #666666;
-}
-```
-
----
-
-## 🚀 Deploy
-
-- **Vercel** (recomendado):
-  1. Conecte o repositório ao Vercel
-  2. Configure variáveis de ambiente
-  3. Deploy automático a cada push
-- **Outros provedores**: Netlify, Railway, Heroku, AWS Amplify
-
----
-
-## 🤝 Contribuição
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/NomeDaFeature`)
-3. Commit suas mudanças (`git commit -m 'feat: Minha feature'`)
-4. Push para a branch (`git push origin feature/NomeDaFeature`)
-5. Abra um Pull Request
-
----
-
-## 📝 Roadmap
-
-- [ ] Suporte a múltiplos idiomas
-- [ ] Exportação da transcrição (SRT, VTT)
-- [ ] Busca na transcrição
-- [ ] Edição manual da transcrição
-- [ ] Suporte a legendas
-- [ ] API de webhooks
-
----
-
-## 🐛 Problemas Conhecidos
-
-- Arquivos de vídeo grandes podem causar lentidão
-- Alguns formatos de vídeo podem não ser suportados em todos os navegadores
-- A transcrição mock é limitada a 30 segundos
-
----
-
-## 👥 Autores
-
-- **Mateus Jairan** – Desenvolvimento inicial – [@mateusjairan](https://github.com/mateusjairan)
-
----
-
-## 🙏 Agradecimentos
-
-- OpenAI pela API Whisper
-- Comunidade React
-- Contribuidores do projeto
-
----
-
-## 📞 Suporte
-
-Se você encontrar algum problema ou tiver dúvidas:
-
-1. Crie uma nova issue se necessário
-2. Entre em contato: mateusjairan@gmail.com
-
----
-
-⭐ **Se este projeto foi útil para você, considere dar uma estrela!**
