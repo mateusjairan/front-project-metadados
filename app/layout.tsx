@@ -17,11 +17,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark">
       <body>
-        <MSWComponent />
-        <Providers>
-          {children}
-          <Toaster richColors theme="dark" />
-        </Providers>
+                <MSWComponent>
+          <Providers>
+            {children}
+            <Toaster richColors theme="dark" />
+          </Providers>
+        </MSWComponent>
       </body>
     </html>
   )

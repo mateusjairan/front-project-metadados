@@ -1,29 +1,24 @@
-"use client";
+'use client'
 
-import { useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from 'react'
 
-// Variável para garantir que o worker seja iniciado apenas uma vez
-let workerStarted = false;
+export function MSWComponent({ children }: PropsWithChildren) {
+  const [isDev, setIsDev] = useState(false)
 
-export function MSWComponent() {
   useEffect(() => {
-    // Roda apenas no lado do cliente e se a variável de ambiente estiver definida
-    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
-      if (workerStarted) return;
+    setIsDev(process.env.NODE_ENV === 'development')
+  }, [])
 
-      // Importa o worker do MSW dinamicamente
-      const initMsw = async () => {
-        const { worker } = await import("./browser");
-        // Inicia o worker com as opções de inicialização
-        await worker.start({
-          onUnhandledRequest: "bypass", // Permite que requisições não mockadas passem direto
-        });
-        workerStarted = true;
-      };
+  useEffect(() => {
+    if (isDev) {
+      async function initMSW() {
+        const { worker } = await import('@/src/mocks/browser')
+        worker.start()
+      }
 
-      initMsw();
+      initMSW()
     }
-  }, []);
+  }, [isDev])
 
-  return null;
+  return <>{children}</>
 }

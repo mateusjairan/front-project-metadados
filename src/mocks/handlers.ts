@@ -1,86 +1,88 @@
-import { http, HttpResponse, delay } from 'msw';
-import { videos } from './db';
-import type { Video } from '@/app/lib/types';
-
-// A URL base da nossa API mockada
-const API_URL = 'http://localhost:8000';
+import { http, HttpResponse, delay } from 'msw'
+import { db } from './db'
 
 export const handlers = [
-  // Handler para GET /videos
-  http.get(`${API_URL}/videos`, async () => {
-    await delay(150); // Simula um delay de rede
-    return HttpResponse.json(videos);
+  http.get('/videos', async () => {
+    await delay(1000)
+    const videos = db.video.getAll()
+    return HttpResponse.json(videos)
   }),
 
-  // Handler para GET /videos/:videoId
-  http.get(`${API_URL}/videos/:videoId`, async ({ params }) => {
-    const { videoId } = params;
-    const video = videos.find((v) => v.id === videoId);
+  http.post('/videos', async ({ request }) => {
+    await delay(1000)
 
-    await delay(150);
+    const data = await request.formData()
 
-    if (!video) {
-      return new HttpResponse(null, { status: 404, statusText: 'Video Not Found' });
+    const file = data.get('file') as File
+
+    if (!file) {
+      return new HttpResponse(null, { status: 400 })
     }
 
-    return HttpResponse.json(video);
-  }),
-
-  // Handler para POST /transcribe
-  http.post(`${API_URL}/transcribe`, async ({ request }) => {
-    // Em um cenário real, analisaríamos o 'request.formData()'
-    // Aqui, vamos apenas simular a criação de um novo vídeo.
-
-    await delay(1500); // Simula o tempo de processamento do vídeo
-
-    const newVideo: Video = {
+    const video = db.video.create({
       id: crypto.randomUUID(),
-      nome_arquivo: `novo_video_${Date.now()}.mp4`,
-      duracao: 180,
-      idioma: 'pt-BR',
-      data_transcricao: new Date().toISOString(),
-      transcricao: 'Esta é uma transcrição gerada para o novo vídeo. O conteúdo foi processado com sucesso.',
-      segments: [
-        { start: 0, end: 5, text: 'Esta é uma transcrição gerada para o novo vídeo.' },
-        { start: 5.5, end: 10, text: 'O conteúdo foi processado com sucesso.' },
-      ],
-    };
+      name: file.name,
+      path: '/',
+      transcription: '',
+      createdAt: new Date().toISOString(),
+    })
 
-    videos.push(newVideo);
-
-    return HttpResponse.json(newVideo, { status: 201 });
+    return HttpResponse.json(video)
   }),
 
-  // Handler para PUT /videos/:videoId
-  http.put(`${API_URL}/videos/:videoId`, async ({ request, params }) => {
-    const { videoId } = params;
-    const body = await request.json() as { nome_arquivo: string };
-    const videoIndex = videos.findIndex((v) => v.id === videoId);
+  http.get('/videos/:id', async ({ params }) => {
+    await delay(1000)
 
-    await delay(200);
+    const video = db.video.findFirst({
+      where: {
+        id: {
+          equals: params.id as string,
+        },
+      },
+    })
 
-    if (videoIndex === -1) {
-      return new HttpResponse(null, { status: 404, statusText: 'Video Not Found' });
-    }
-
-    videos[videoIndex].nome_arquivo = body.nome_arquivo;
-
-    return HttpResponse.json(videos[videoIndex]);
+    return HttpResponse.json(video)
   }),
 
-  // Handler para DELETE /videos/:videoId
-  http.delete(`${API_URL}/videos/:videoId`, async ({ params }) => {
-    const { videoId } = params;
-    const videoIndex = videos.findIndex((v) => v.id === videoId);
+  http.put('/videos/:id', async ({ request, params }) => {
+    await delay(1000)
 
-    await delay(300);
+    const { transcription } = (await request.json()) as { transcription: string }
 
-    if (videoIndex === -1) {
-      return new HttpResponse(null, { status: 404, statusText: 'Video Not Found' });
-    }
+    const updatedVideo = db.video.update({
+      where: {
+        id: {
+          equals: params.id as string,
+        },
+      },
+      data: {
+        transcription,
+      },
+    })
 
-    videos.splice(videoIndex, 1);
-
-    return new HttpResponse(null, { status: 204 });
+    return HttpResponse.json(updatedVideo)
   }),
-];
+
+  http.delete('/videos/:id', async ({ params }) => {
+    await delay(1000)
+
+    db.video.delete({
+      where: {
+        id: {
+          equals: params.id as string,
+        },
+      },
+    })
+
+    return new HttpResponse(null, { status: 204 })
+  }),
+
+  http.post('/videos/:id/transcription', async () => {
+    await delay(2000)
+
+    return HttpResponse.json({
+      transcription:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies ultricies, nunc nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl. Donec auctor, nisl eget ultricies ultricies, nunc nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
+    })
+  }),
+]
