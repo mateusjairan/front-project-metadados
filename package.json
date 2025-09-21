@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -46,26 +46,33 @@
     "embla-carousel-react": "8.5.1",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
-    "next": "^15.3.3",
+    "next": "15.2.4",
     "next-themes": "latest",
     "react": "^19",
     "react-dom": "^19",
-    "react-highlight-words": "^0.21.0",
+    "react-highlight-words": "latest",
     "react-hook-form": "^7.54.1",
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.0",
-    "sonner": "^1.7.1",
+    "sonner": "latest",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@mswjs/data": "^0.16.2",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-highlight-words": "^0.20.0",
+    "msw": "^2.11.3",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
