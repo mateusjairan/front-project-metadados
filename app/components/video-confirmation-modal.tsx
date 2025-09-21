@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { X, Clock, FileWarning } from "lucide-react";
+import styles from "./video-confirmation-modal.module.css";
 
 interface VideoConfirmationModalProps {
   isOpen: boolean;
@@ -29,8 +31,7 @@ export default function VideoConfirmationModal({
       video.playsInline = true;
 
       const onLoadedData = () => {
-        // Seek to a point in the video to capture a frame. 1s is a good default.
-        video.currentTime = 1;
+        video.currentTime = 1; // Seek to 1s to get a frame
       };
 
       const onSeeked = () => {
@@ -44,7 +45,6 @@ export default function VideoConfirmationModal({
         }
         setIsLoadingThumbnail(false);
         URL.revokeObjectURL(url);
-        // Clean up listeners
         video.removeEventListener("loadeddata", onLoadedData);
         video.removeEventListener("seeked", onSeeked);
       };
@@ -72,68 +72,52 @@ export default function VideoConfirmationModal({
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-        <button className="close-icon" onClick={onClose} aria-label="Close">
-          &times;
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalBox} onClick={(e) => e.stopPropagation()}>
+        <button
+          className={styles.closeIcon}
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <X size={24} />
         </button>
-        <h2 className="modal-header">Confirmar o Upload</h2>
-        <div className="video-preview">
+        <h2 className={styles.modalHeader}>Confirmar o Upload</h2>
+        <div className={styles.videoPreview}>
           {isLoadingThumbnail && (
-            <div className="thumbnail-placeholder">
-              <svg
-                width="64"
-                height="64"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              <span>Generating preview...</span>
+            <div className={styles.thumbnailPlaceholder}>
+              <Clock size={48} />
+              <span>Gerando pré-visualização...</span>
             </div>
           )}
           {thumbnailUrl && !isLoadingThumbnail && (
             <img
               src={thumbnailUrl}
               alt="Video thumbnail"
-              className="video-thumbnail"
+              className={styles.videoThumbnail}
             />
           )}
           {!thumbnailUrl && !isLoadingThumbnail && (
-            <div className="thumbnail-placeholder">
-              <svg
-                width="64"
-                height="64"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14,2 14,8 20,8" />
-                <line x1="10" y1="15" x2="10" y2="9" />
-                <polyline points="13 12 10 9 7 12" />
-              </svg>
-              <span>Preview unavailable</span>
+            <div className={styles.thumbnailPlaceholder}>
+              <FileWarning size={48} />
+              <span>Pré-visualização indisponível</span>
             </div>
           )}
         </div>
-        <p className="file-name">{file.name}</p>
-        <p className="confirmation-text">
-          Esse é o video que deseja enviar?
+        <p className={styles.fileName}>{file.name}</p>
+        <p className={styles.confirmationText}>
+          Este é o vídeo que deseja enviar?
         </p>
-        <div className="action-buttons">
-          <button className="secondary-button" onClick={onClose}>
+        <div className={styles.actionButtons}>
+          <button
+            className={`${styles.actionButtons} ${styles.secondaryButton}`}
+            onClick={onClose}
+          >
             Cancelar
           </button>
-          <button className="primary-button" onClick={onConfirm}>
+          <button
+            className={`${styles.actionButtons} ${styles.primaryButton}`}
+            onClick={onConfirm}
+          >
             Confirmar e Enviar
           </button>
         </div>

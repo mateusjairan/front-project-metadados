@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { getTranscription } from "@/services/transcription-api"
-import type { TranscriptionSegment } from "@/types/transcription"
+import { getTranscription } from "@/app/lib/api"
+import type { TranscriptionSegment } from "@/app/lib/types"
 import Highlighter from "react-highlight-words"
+import styles from "./transcription-panel.module.css"
 
 interface TranscriptionPanelProps {
   videoFile: File
@@ -54,14 +55,14 @@ export default function TranscriptionPanel({
 
   if (isLoading) {
     return (
-      <div className="transcription-panel">
-        <div className="transcription-header">
-          <h3>Transcrição </h3>
+      <div className={styles.panel}>
+        <div className={styles.header}>
+          <h3 className={styles.title}>Transcrição</h3>
         </div>
-        <div className="transcription-loading">
-          <div className="loading-spinner"></div>
-            <p>Gerando transcrição...</p>
-          <p className="loading-subtitle">Isso pode levar algum tempo. Tenha paciência.</p>
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+          <p>Gerando transcrição...</p>
+          <p className={styles.subtitle}>Isso pode levar algum tempo. Tenha paciência.</p>
         </div>
       </div>
     )
@@ -69,49 +70,54 @@ export default function TranscriptionPanel({
 
   if (error) {
     return (
-      <div className="transcription-panel">
-        <div className="transcription-header">
-          <h3>Transcrição</h3>
+      <div className={styles.panel}>
+        <div className={styles.header}>
+          <h3 className={styles.title}>Transcrição</h3>
         </div>
-        <div className="transcription-error">
+        <div className={styles.error}>
           <p>Erro ao gerar transcrição</p>
-          <p className="error-message">Por favor tente de novo mais tarde.</p>
+          <p className={styles.errorMessage}>Por favor tente de novo mais tarde.</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="transcription-panel">
-      <div className="transcription-header">
-        <h3>Transcrição</h3>
-        <input placeholder="Buscar na transcrição" type="search" name="" id="" value={searchTerm}
-        onChange={e => setSearchTerm(e.target.value)} className="transcription-search-input" />
-        <div className="transcription-status">
-          <span className={`status-indicator ${isPlaying ? "playing" : "paused"}`}></span>
+    <div className={styles.panel}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Transcrição</h3>
+        <input
+          placeholder="Buscar na transcrição"
+          type="search"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          className={styles.searchInput}
+        />
+        <div className={styles.status}>
+          <span className={`${styles.indicator} ${isPlaying ? styles.playing : ""}`}></span>
           <span>{formatTime(currentTime)}</span>
         </div>
       </div>
 
-      <div className="transcription-content">
-        {transcription.length === 0 ? (
-          <div className="transcription-empty">
+      <div className={styles.content}>
+        {transcription.length === 0 && !isLoading ? (
+          <div className={styles.empty}>
             <p>Sem transcrição disponível.</p>
           </div>
         ) : (
-          <div className="transcription-segments">
+          <div className={styles.segments}>
             {filteredSegments.map((segment, index) => (
               <div
                 key={index}
-                className={`transcription-segment ${isSegmentActive(segment) ? "active" : ""}`}
+                className={`${styles.segment} ${isSegmentActive(segment) ? styles.active : ""}`}
                 onClick={() => onTranscriptionClick(segment.start)}
               >
-                <div className="segment-time">
+                <div className={styles.time}>
                   {formatTime(segment.start)} - {formatTime(segment.end)}
                 </div>
-                <div className="segment-text">
+                <div className={styles.text}>
                   <Highlighter
-                    highlightClassName="highlight"
+                    highlightClassName={styles.highlight}
                     searchWords={[searchTerm]}
                     autoEscape={true}
                     textToHighlight={segment.text}

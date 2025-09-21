@@ -1,214 +1,113 @@
-# 🎥 Aplicação de Transcrição de Vídeo
+# Dashboard de Transcrição
 
-Uma aplicação web moderna desenvolvida em React e Next.js que permite fazer upload de vídeos e gerar transcrições automáticas sincronizadas com a reprodução do vídeo.
+## Descrição
 
----
+Este projeto é um dashboard web completo, moderno e responsivo para interagir com a API **ManipulaçãoMetadados-CPU 2.0**. A aplicação permite aos usuários fazer upload de mídias para transcrição, visualizar todas as transcrições existentes, gerenciar metadados (como nome) e excluir transcrições.
 
-## ✨ Funcionalidades
-
-- **Upload de Vídeo**: Interface intuitiva para arrastar e soltar arquivos de vídeo (MP4, WebM, AVI, MOV).
-- **Player de Vídeo**: Reprodutor HTML5 com controles personalizados.
-- **Transcrição Sincronizada**: Transcrição automática com timestamps, destacando o segmento atual.
-- **Navegação Inteligente**: Clique em qualquer trecho da transcrição para pular para aquele momento do vídeo.
-- **Tema Escuro**: Interface moderna, responsiva e agradável.
-- **Performance**: Cache inteligente com React Query.
+A interface foi construída seguindo as melhores práticas de UI/UX, com um tema escuro padrão, feedback visual claro para todas as ações do usuário e design responsivo para desktops, tablets e dispositivos móveis.
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
-- **React 19** – Biblioteca principal de UI
-- **Next.js 15** – Framework React para SSR e rotas
-- **React Query (TanStack Query)** – Gerenciamento de requisições e cache
-- **TypeScript** – Tipagem estática
-- **CSS Puro** – Estilização customizada
-- **HTML5 Video** – Player nativo
-
----
-
-## 📋 Pré-requisitos
-
-- Node.js 18 ou superior
-- npm (recomendado)
+- **Framework**: Next.js 15 (com App Router)
+- **Linguagem**: TypeScript
+- **Gerenciamento de Estado de Servidor**: React Query (@tanstack/react-query)
+- **Estilização**: CSS Puro com CSS Modules (`.module.css`)
+- **Ícones**: `lucide-react`
+- **Notificações**: `sonner` (semelhante a react-hot-toast)
 
 ---
 
-## 🛠️ Instalação Passo a Passo
+## Pré-requisitos
 
-1. **Clone o repositório**
-
-```bash
-git clone https://github.com/seu-usuario/video-transcription-app.git
-cd video-transcription-app
-```
-
-2. **Instale as dependências**
-
-Se encontrar erros de dependência, use o comando com `--legacy-peer-deps`:
-
-```bash
-npm install --legacy-peer-deps
-```
-
-3. **Configuração da API de Transcrição**
-
-Por padrão, a aplicação está pronta para consumir uma API local de transcrição (exemplo: [MetadadosPy/manipulacao_metadados](https://github.com/MetadadosPy/manipulacao_metadados)).
-
-- Certifique-se de que a API está rodando localmente em `http://localhost:8000/transcribe`.
-- O arquivo `services/transcription-api.ts` já está configurado para enviar o vídeo para esse endpoint.
-
-Se quiser usar a API do OpenAI Whisper, descomente o trecho correspondente no mesmo arquivo e adicione sua chave no `.env.local`:
-
-```env
-NEXT_PUBLIC_OPENAI_API_KEY=sua_chave_aqui
-```
-
-4. **Execute o projeto**
-
-```bash
-npm run dev
-```
-
-5. **Acesse a aplicação**
-
-Abra o navegador e acesse:
-
-```
-http://localhost:3000
-```
+- Node.js (v18 ou superior)
+- `npm`, `yarn` ou `pnpm`
 
 ---
 
-## 📁 Estrutura do Projeto
+## Como Instalar e Rodar
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/MetadadosPy/manipulacao_metadados.git
+    # Navegue para a pasta do projeto frontend (se aplicável)
+    ```
+
+2.  **Instale as dependências:**
+    ```bash
+    npm install
+    ```
+
+3.  **Configure as Variáveis de Ambiente:**
+    Crie um arquivo `.env.local` na raiz do projeto e adicione a URL da sua API.
+    ```plaintext
+    NEXT_PUBLIC_API_URL=http://localhost:8000
+    ```
+
+4.  **Execute a Aplicação:**
+    ```bash
+    npm run dev
+    ```
+
+5.  **Acesse no Navegador:**
+    Abra [http://localhost:3000](http://localhost:3000) para ver a aplicação.
+
+> **IMPORTANTE:** Certifique-se de que o back-end da API **ManipulaçãoMetadados-CPU 2.0** está em execução (por padrão, na porta 8000) antes de iniciar a aplicação front-end.
+
+---
+
+## Funcionalidades Implementadas
+
+- **Dashboard Principal**: Lista todas as transcrições em uma tabela com informações como nome do arquivo, duração, idioma e data.
+- **Nova Transcrição**: Página dedicada para upload de novos arquivos de áudio/vídeo com suporte a "arrastar e soltar".
+- **Visualização de Detalhes**: Página para cada transcrição, exibindo metadados completos, a transcrição completa em texto e uma visualização de segmentos interativa.
+- **Edição de Nome**: Um modal permite ao usuário editar o campo "nome" de uma transcrição existente.
+- **Exclusão de Transcrição**: Fluxo de exclusão com modal de confirmação para evitar ações acidentais.
+- **Feedback de Usuário**: Notificações (toasts) de sucesso e erro para todas as operações assíncronas (upload, edição, exclusão).
+- **Estados de Carregamento**: Indicadores de carregamento (spinners, desabilitação de botões) para uma UX fluida.
+- **Design Responsivo**: A aplicação é totalmente funcional em diferentes tamanhos de tela.
+
+---
+
+## Estrutura do Projeto
+
+O projeto foi organizado para garantir escalabilidade e manutenibilidade, utilizando a seguinte estrutura dentro do diretório `/app`:
 
 ```
-├── app/                          # Páginas Next.js
-│   ├── globals.css              # Estilos globais
-│   ├── layout.tsx               # Layout principal
-│   └── page.tsx                 # Página inicial
-├── components/                   # Componentes React reutilizáveis
-│   ├── video-uploader.tsx       # Upload de vídeo
-│   ├── video-player.tsx         # Player de vídeo
-│   └── transcription-panel.tsx  # Painel de transcrição
-├── hooks/                       # Hooks customizados
-│   └── use-video-sync.tsx       # Sincronização do player
-├── services/                    # Serviços de API
-│   └── transcription-api.ts     # Função para transcrição
-├── types/                       # Tipos TypeScript
-│   └── transcription.ts         # Tipos da transcrição
-├── src/                         # Versão alternativa em React puro
-│   ├── components/              # Componentes JSX
-│   ├── hooks/                   # Hooks personalizados
-│   ├── api/                     # Funções de API
-│   └── styles/                  # Arquivos CSS
-└── styles/                      # Estilos globais e específicos
+/app
+├── (dashboard)                  # Grupo de rotas para o layout principal
+│   ├── @modal/(.)videos/[id]/edit # Rota interceptada para o modal de edição
+│   ├── layout.tsx               # Layout principal com providers
+│   ├── page.tsx                 # Página do Dashboard (listagem)
+│   ├── transcrever/             # Página de upload
+│   └── videos/[id]/             # Página de detalhes da transcrição
+├── components
+│   ├── ui/                      # Componentes de UI genéricos (Modal, etc.)
+│   └── ...                      # Outros componentes reutilizados
+├── features                     # Componentes complexos e específicos de uma feature
+│   ├── dashboard/
+│   │   └── VideosTable.tsx
+│   ├── transcription/
+│   │   └── UploadForm.tsx
+│   └── video-details/
+│       └── SegmentsViewer.tsx
+├── lib
+│   ├── api.ts                   # Funções para chamadas à API (fetch)
+│   ├── hooks.ts                 # Custom hooks (React Query)
+│   ├── types.ts                 # Definições de tipos TypeScript
+│   └── utils.ts                 # Funções utilitárias (formatação de data)
+└── globals.css                  # Estilos globais e variáveis CSS
 ```
 
 ---
 
-## 🎯 Como Usar
+## Decisões de Arquitetura e Limitações
 
-1. **Faça Upload do Vídeo**
-   - Arraste e solte um arquivo de vídeo na área indicada ou clique para selecionar.
-2. **Aguarde a Transcrição**
-   - O vídeo será enviado para a API e a transcrição aparecerá sincronizada.
-3. **Navegue pela Transcrição**
-   - Clique em qualquer segmento para pular para aquele momento do vídeo.
-   - O segmento atual é destacado durante a reprodução.
+Para contornar algumas limitações da API, foram adotadas as seguintes estratégias no front-end:
 
----
+1.  **Busca de Detalhes de um Vídeo (`GET /videos/{id}` inexistente):**
+    *   **Solução:** Foi utilizada a estratégia *"Fetch All + Filter"*. A página de detalhes (`/videos/[id]`) utiliza o hook `useGetVideos()` para buscar a lista completa de vídeos, que o React Query já mantém em cache. Em seguida, a lista é filtrada no lado do cliente para encontrar o vídeo com o `id` correspondente. Isso torna a navegação para os detalhes quase instantânea após o primeiro carregamento.
 
-## 🔧 Configuração da API
-
-- **API Local**: Por padrão, a aplicação envia o vídeo para `http://localhost:8000/transcribe`.
-- **API OpenAI Whisper**: Descomente o código no `transcription-api.ts` e adicione sua chave no `.env.local`.
-- **API Personalizada**: Altere a URL no `transcription-api.ts` para o endpoint desejado.
-
----
-
-## 📱 Responsividade
-
-- **Desktop**: Layout em duas colunas
-- **Tablet**: Layout empilhado
-- **Mobile**: Interface otimizada para toque
-
----
-
-## 🎨 Personalização
-
-- Os estilos estão em `app/globals.css` e na pasta `styles/`.
-- Para mudar cores, edite as variáveis CSS em `globals.css`:
-
-```css
-:root {
-  --background: #0a0a0a;
-  --foreground: #ffffff;
-  --accent: #666666;
-}
-```
-
----
-
-## 🚀 Deploy
-
-- **Vercel** (recomendado):
-  1. Conecte o repositório ao Vercel
-  2. Configure variáveis de ambiente
-  3. Deploy automático a cada push
-- **Outros provedores**: Netlify, Railway, Heroku, AWS Amplify
-
----
-
-## 🤝 Contribuição
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/NomeDaFeature`)
-3. Commit suas mudanças (`git commit -m 'feat: Minha feature'`)
-4. Push para a branch (`git push origin feature/NomeDaFeature`)
-5. Abra um Pull Request
-
----
-
-## 📝 Roadmap
-
-- [ ] Suporte a múltiplos idiomas
-- [ ] Exportação da transcrição (SRT, VTT)
-- [ ] Busca na transcrição
-- [ ] Edição manual da transcrição
-- [ ] Suporte a legendas
-- [ ] API de webhooks
-
----
-
-## 🐛 Problemas Conhecidos
-
-- Arquivos de vídeo grandes podem causar lentidão
-- Alguns formatos de vídeo podem não ser suportados em todos os navegadores
-- A transcrição mock é limitada a 30 segundos
-
----
-
-## 👥 Autores
-
-- **Mateus Jairan** – Desenvolvimento inicial – [@mateusjairan](https://github.com/mateusjairan)
-
----
-
-## 🙏 Agradecimentos
-
-- OpenAI pela API Whisper
-- Comunidade React
-- Contribuidores do projeto
-
----
-
-## 📞 Suporte
-
-Se você encontrar algum problema ou tiver dúvidas:
-
-1. Crie uma nova issue se necessário
-2. Entre em contato: mateusjairan@gmail.com
-
----
-
-⭐ **Se este projeto foi útil para você, considere dar uma estrela!**
+2.  **Obtenção do ID do Vídeo Após o Upload (`POST /transcribe/` não retorna o ID):**
+    *   **Solução:** Foi utilizada a estratégia *"Refetch + Find"*. Após o sucesso do upload na rota `/transcribe/`, a query `['videos']` do React Query é invalidada, forçando uma nova busca da lista completa de vídeos. Com a lista atualizada, o front-end encontra o vídeo recém-criado comparando o `nome_arquivo` com o nome do arquivo que acabou de ser enviado. Com o `id` em mãos, o usuário é redirecionado para a página de detalhes (`/videos/[id]`).

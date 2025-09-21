@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.segmentsList {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 0.5rem;
+  background-color: #1a1a1a;
+}
+
+.segment {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.segment:hover {
+  background-color: #2a2a2a;
+}
+
+.segment.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.timestamp {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.segment.active .timestamp {
+  color: #e0e0e0;
+}
+
+.text {
+  line-height: 1.6;
+}
+
+.emptyText {
+  color: #888;
+  padding: 2rem;
+  text-align: center;
+}

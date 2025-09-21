@@ -1,0 +1,152 @@
+.panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #333;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #aaaaaa;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #666;
+}
+
+.indicator.playing {
+  background: #4ade80;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 680px;
+}
+
+.segments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.segment {
+  padding: 1rem;
+  border-radius: 8px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.segment:hover {
+  background: #222;
+  border-color: #555;
+}
+
+.segment.active {
+  background: #2a2a2a;
+  border-color: #666;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.time {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+  font-family: "Courier New", monospace;
+}
+
+.text {
+  color: #ffffff;
+  line-height: 1.5;
+}
+
+.loading,
+.error,
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #333;
+  border-top: 3px solid #666;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.subtitle,
+.errorMessage {
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 0.5rem;
+}
+
+.error p:first-child {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.searchInput{
+  background-color: #0a0a0a;
+  font-size: 1rem;
+  color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #666;
+  outline: none;
+  padding: 3px;
+}
+
+.highlight {
+  background-color: #3ba7ff;
+  color: #000;
+  padding: 0 2px;
+  border-radius: 2px;
+}
