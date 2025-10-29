@@ -30,20 +30,20 @@ Antes de começar, certifique-se de ter o seguinte instalado em sua máquina:
 Siga os passos abaixo para configurar e rodar o projeto localmente:
 
 1.  **Clone o repositório:**
-    ```bash
+    \`\`\`bash
     git clone <URL_DO_REPOSITORIO>
     cd <NOME_DA_PASTA>
-    ```
+    \`\`\`
 
 2.  **Instale as dependências:**
-    ```bash
+    \`\`\`bash
     npm install
-    ```
+    \`\`\`
 
 3.  **Execute o projeto:**
-    ```bash
+    \`\`\`bash
     npm run dev
-    ```
+    \`\`\`
 
 4.  **Acesse a aplicação:**
     Abra seu navegador e acesse `http://localhost:3000`.
@@ -73,7 +73,7 @@ Siga os passos abaixo para configurar e rodar o projeto localmente:
 
 O código-fonte está organizado de forma lógica para promover escalabilidade e manutenibilidade:
 
-```
+\`\`\`
 /app
 ├── /components/ui/      # Componentes de UI genéricos e reutilizáveis (Modal, Botão, etc.)
 ├── /features/           # Componentes complexos e específicos de funcionalidades
@@ -95,4 +95,4 @@ O código-fonte está organizado de forma lógica para promover escalabilidade e
     ├── db.ts            # Banco de dados mock em memória
     ├── handlers.ts      # Handlers que interceptam as requisições HTTP
     └── MSWComponent.tsx # Componente que ativa o MSW
-```
+\`\`\`

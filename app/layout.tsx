@@ -7,6 +7,7 @@ import { Toaster } from 'sonner'
 export const metadata: Metadata = {
   title: 'Dashboard de Transcrição',
   description: 'Dashboard para gerenciar transcrições de vídeo.',
+    generator: 'v0.app'
 }
 
 export default function RootLayout({
