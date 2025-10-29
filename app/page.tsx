@@ -1,9 +1,9 @@
-"use client"; // A página principal ainda precisa ser um client component para usar o Link do Next.js e o CSS Module da forma como está estruturado
+"use client"
 
-import Link from 'next/link';
-import { PlusCircle } from 'lucide-react';
-import styles from './page.module.css';
-import { VideosTable } from '@/app/features/dashboard/VideosTable';
+import Link from "next/link"
+import { PlusCircle } from "lucide-react"
+import styles from "./page.module.css"
+import { VideosTable } from "@/app/features/dashboard/VideosTable"
 
 export default function DashboardPage() {
   return (
@@ -22,5 +22,5 @@ export default function DashboardPage() {
         <VideosTable />
       </section>
     </main>
-  );
+  )
 }
